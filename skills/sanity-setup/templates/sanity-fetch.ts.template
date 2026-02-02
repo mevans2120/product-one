@@ -1,0 +1,85 @@
+/**
+ * Sanity Fetch Utility
+ *
+ * Unified data fetching that handles:
+ * - Draft mode (preview vs published)
+ * - Stega encoding (for click-to-edit)
+ * - Caching with ISR
+ * - Type safety
+ *
+ * Place in: sanity/lib/fetch.ts
+ */
+
+import { draftMode } from "next/headers";
+import type { QueryParams } from "@sanity/client";
+
+import { client, previewClient } from "./client";
+
+// Default revalidation time (seconds)
+const DEFAULT_REVALIDATE = 60;
+
+interface SanityFetchOptions {
+  query: string;
+  params?: QueryParams;
+  revalidate?: number | false;
+  tags?: string[];
+}
+
+/**
+ * Fetch data from Sanity with automatic draft mode handling
+ *
+ * @example
+ * const data = await sanityFetch({
+ *   query: `*[_type == "page" && slug.current == $slug][0]`,
+ *   params: { slug: "about" },
+ *   tags: ["page"],
+ * });
+ */
+export async function sanityFetch<T>({
+  query,
+  params = {},
+  revalidate = DEFAULT_REVALIDATE,
+  tags = [],
+}: SanityFetchOptions): Promise<T> {
+  const { isEnabled: isDraftMode } = await draftMode();
+
+  // Use appropriate client based on draft mode
+  const activeClient = isDraftMode ? previewClient : client;
+
+  // Fetch with correct perspective
+  return activeClient.fetch<T>(
+    query,
+    params,
+    isDraftMode
+      ? {
+          // Draft mode: no caching, preview perspective
+          perspective: "previewDrafts",
+          stega: true, // Enable click-to-edit
+          next: { revalidate: 0 }, // Never cache drafts
+        }
+      : {
+          // Production: cache with ISR
+          perspective: "published",
+          stega: false,
+          next: {
+            revalidate,
+            tags,
+          },
+        }
+  );
+}
+
+/**
+ * Fetch without draft mode (for sitemap, RSS, etc.)
+ */
+export async function sanityFetchPublished<T>({
+  query,
+  params = {},
+  revalidate = DEFAULT_REVALIDATE,
+  tags = [],
+}: SanityFetchOptions): Promise<T> {
+  return client.fetch<T>(query, params, {
+    perspective: "published",
+    next: { revalidate, tags },
+  });
+}

@@ -1,0 +1,34 @@
+/**
+ * Enable Draft Mode
+ *
+ * API route to enable Next.js draft mode for Sanity preview.
+ * Place in: app/api/draft-mode/enable/route.ts
+ */
+
+import { draftMode } from "next/headers";
+import { redirect } from "next/navigation";
+import { NextRequest } from "next/server";
+
+import { validatePreviewUrl } from "@sanity/preview-url-secret";
+
+import { client } from "@/sanity/lib/client";
+import { readToken } from "@/sanity/env";
+
+export async function GET(request: NextRequest) {
+  // Validate the request came from Sanity
+  const { isValid, redirectTo = "/" } = await validatePreviewUrl(
+    client.withConfig({ token: readToken }),
+    request.url
+  );
+
+  if (!isValid) {
+    return new Response("Invalid secret", { status: 401 });
+  }
+
+  // Enable draft mode
+  const draft = await draftMode();
+  draft.enable();
+
+  // Redirect to the page being previewed
+  redirect(redirectTo);
+}

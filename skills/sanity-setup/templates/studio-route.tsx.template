@@ -1,0 +1,20 @@
+/**
+ * Sanity Studio Route
+ *
+ * Embeds Sanity Studio in your Next.js app.
+ * Place in: app/studio/[[...tool]]/page.tsx
+ *
+ * The [[...tool]] catch-all allows deep linking into studio tools.
+ */
+
+import { NextStudio } from "next-sanity/studio";
+
+import config from "@/sanity.config";
+
+export const dynamic = "force-static";
+
+export { metadata, viewport } from "next-sanity/studio";
+
+export default function StudioPage() {
+  return <NextStudio config={config} />;
+}

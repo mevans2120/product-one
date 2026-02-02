@@ -1,0 +1,109 @@
+/**
+ * Revalidation Webhook
+ *
+ * API route that Sanity calls when content is published.
+ * Triggers Next.js ISR to update cached pages.
+ *
+ * Place in: app/api/revalidate/route.ts
+ *
+ * Configure webhook in Sanity:
+ * 1. Go to sanity.io/manage → your project → API → Webhooks
+ * 2. Create webhook with URL: https://your-domain.com/api/revalidate?secret=YOUR_SECRET
+ * 3. Select triggers: Create, Update, Delete
+ */
+
+import { revalidateTag, revalidatePath } from "next/cache";
+import { NextRequest, NextResponse } from "next/server";
+
+import { parseBody } from "next-sanity/webhook";
+
+import { revalidateSecret } from "@/sanity/env";
+
+export async function POST(request: NextRequest) {
+  try {
+    // Validate webhook secret
+    const { isValidSignature, body } = await parseBody<{
+      _type: string;
+      slug?: { current?: string };
+    }>(request, revalidateSecret);
+
+    if (!isValidSignature) {
+      return NextResponse.json(
+        { message: "Invalid signature" },
+        { status: 401 }
+      );
+    }
+
+    if (!body?._type) {
+      return NextResponse.json(
+        { message: "No document type in body" },
+        { status: 400 }
+      );
+    }
+
+    // Revalidate based on document type
+    // Adjust these mappings based on your content types
+    const revalidations: string[] = [];
+
+    switch (body._type) {
+      case "page":
+        // Revalidate specific page if slug exists
+        if (body.slug?.current) {
+          revalidatePath(`/${body.slug.current}`);
+          revalidations.push(`/${body.slug.current}`);
+        }
+        // Also revalidate the tag
+        revalidateTag("page");
+        revalidations.push("tag:page");
+        break;
+
+      case "post":
+        revalidateTag("post");
+        revalidatePath("/blog");
+        if (body.slug?.current) {
+          revalidatePath(`/blog/${body.slug.current}`);
+          revalidations.push(`/blog/${body.slug.current}`);
+        }
+        revalidations.push("tag:post", "/blog");
+        break;
+
+      case "service":
+        revalidateTag("service");
+        revalidatePath("/services");
+        revalidations.push("tag:service", "/services");
+        break;
+
+      case "siteSettings":
+      case "footer":
+      case "navigation":
+        // Global settings - revalidate everything
+        revalidatePath("/", "layout");
+        revalidations.push("/ (layout)");
+        break;
+
+      case "homepage":
+        revalidatePath("/");
+        revalidateTag("homepage");
+        revalidations.push("/", "tag:homepage");
+        break;
+
+      default:
+        // Unknown type - revalidate its tag
+        revalidateTag(body._type);
+        revalidations.push(`tag:${body._type}`);
+    }
+
+    return NextResponse.json({
+      revalidated: true,
+      type: body._type,
+      revalidations,
+      now: Date.now(),
+    });
+  } catch (err) {
+    console.error("Revalidation error:", err);
+    return NextResponse.json(
+      { message: "Error revalidating", error: String(err) },
+      { status: 500 }
+    );
+  }
+}

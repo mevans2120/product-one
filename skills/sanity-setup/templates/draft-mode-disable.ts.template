@@ -1,0 +1,19 @@
+/**
+ * Disable Draft Mode
+ *
+ * API route to disable Next.js draft mode.
+ * Place in: app/api/draft-mode/disable/route.ts
+ */
+
+import { draftMode } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(request: NextRequest) {
+  const draft = await draftMode();
+  draft.disable();
+
+  // Get redirect URL from query params, default to home
+  const redirectTo = request.nextUrl.searchParams.get("redirect") || "/";
+
+  return NextResponse.redirect(new URL(redirectTo, request.url));
+}

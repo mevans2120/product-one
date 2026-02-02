@@ -1,0 +1,230 @@
+/* ==========================================================================
+   Design System: [PROJECT_NAME]
+   Generated: [DATE]
+
+   This file establishes all design tokens for the project.
+   DO NOT add hardcoded colors, fonts, or sizes elsewhere.
+   ========================================================================== */
+
+@import "tailwindcss";
+
+/* ==========================================================================
+   CSS Variables - Light Mode (Default)
+   ========================================================================== */
+
+:root {
+  /* -------------------------------------------------------------------------
+     Colors - Primary Palette
+     Format: HSL values without hsl() wrapper for Tailwind compatibility
+     Usage: bg-primary, text-primary, border-primary
+     ------------------------------------------------------------------------- */
+  --color-primary: [PRIMARY_HSL];           /* Main brand color */
+  --color-primary-foreground: [PRIMARY_FG_HSL]; /* Text on primary */
+
+  --color-secondary: [SECONDARY_HSL];       /* Supporting color */
+  --color-secondary-foreground: [SECONDARY_FG_HSL];
+
+  --color-accent: [ACCENT_HSL];             /* CTAs, highlights */
+  --color-accent-foreground: [ACCENT_FG_HSL];
+
+  /* -------------------------------------------------------------------------
+     Colors - Semantic
+     ------------------------------------------------------------------------- */
+  --color-background: [BG_HSL];             /* Page background */
+  --color-foreground: [FG_HSL];             /* Default text */
+
+  --color-muted: [MUTED_HSL];               /* Subdued backgrounds */
+  --color-muted-foreground: [MUTED_FG_HSL]; /* Subdued text */
+
+  --color-card: [CARD_HSL];                 /* Card backgrounds */
+  --color-card-foreground: [CARD_FG_HSL];
+
+  --color-border: [BORDER_HSL];             /* Borders, dividers */
+  --color-input: [INPUT_HSL];               /* Form input borders */
+  --color-ring: [RING_HSL];                 /* Focus rings */
+
+  /* -------------------------------------------------------------------------
+     Colors - Feedback
+     ------------------------------------------------------------------------- */
+  --color-destructive: 0 84% 60%;           /* Errors, delete actions */
+  --color-destructive-foreground: 0 0% 100%;
+
+  --color-success: 142 76% 36%;             /* Success states */
+  --color-success-foreground: 0 0% 100%;
+
+  --color-warning: 38 92% 50%;              /* Warnings */
+  --color-warning-foreground: 0 0% 0%;
+
+  /* -------------------------------------------------------------------------
+     Typography
+     ------------------------------------------------------------------------- */
+  --font-heading: var(--font-[HEADING_FONT_VAR]);
+  --font-body: var(--font-[BODY_FONT_VAR]);
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  /* -------------------------------------------------------------------------
+     Spacing (only if deviating from Tailwind defaults)
+     ------------------------------------------------------------------------- */
+  --spacing-section: 5rem;      /* Vertical space between page sections */
+  --spacing-container: 1.5rem;  /* Horizontal container padding */
+
+  /* -------------------------------------------------------------------------
+     Border Radius
+     ------------------------------------------------------------------------- */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+
+  /* -------------------------------------------------------------------------
+     Shadows
+     ------------------------------------------------------------------------- */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* -------------------------------------------------------------------------
+     Transitions
+     ------------------------------------------------------------------------- */
+  --transition-fast: 150ms;
+  --transition-normal: 200ms;
+  --transition-slow: 300ms;
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   CSS Variables - Dark Mode
+   Even if not using dark mode now, define these to avoid refactoring later.
+   ========================================================================== */
+
+.dark {
+  --color-primary: [DARK_PRIMARY_HSL];
+  --color-primary-foreground: [DARK_PRIMARY_FG_HSL];
+
+  --color-secondary: [DARK_SECONDARY_HSL];
+  --color-secondary-foreground: [DARK_SECONDARY_FG_HSL];
+
+  --color-accent: [DARK_ACCENT_HSL];
+  --color-accent-foreground: [DARK_ACCENT_FG_HSL];
+
+  --color-background: [DARK_BG_HSL];
+  --color-foreground: [DARK_FG_HSL];
+
+  --color-muted: [DARK_MUTED_HSL];
+  --color-muted-foreground: [DARK_MUTED_FG_HSL];
+
+  --color-card: [DARK_CARD_HSL];
+  --color-card-foreground: [DARK_CARD_FG_HSL];
+
+  --color-border: [DARK_BORDER_HSL];
+  --color-input: [DARK_INPUT_HSL];
+  --color-ring: [DARK_RING_HSL];
+}
+
+/* ==========================================================================
+   Base Styles
+   ========================================================================== */
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  /* Typography defaults */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading tracking-tight;
+  }
+
+  h1 {
+    @apply text-4xl font-bold md:text-5xl lg:text-6xl;
+  }
+
+  h2 {
+    @apply text-3xl font-semibold md:text-4xl;
+  }
+
+  h3 {
+    @apply text-2xl font-semibold md:text-3xl;
+  }
+
+  h4 {
+    @apply text-xl font-medium md:text-2xl;
+  }
+
+  p {
+    @apply text-base leading-relaxed;
+  }
+
+  /* Link defaults */
+  a {
+    @apply text-primary underline-offset-4 hover:underline;
+  }
+
+  /* Focus styles */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+
+@layer utilities {
+  /* Container with consistent padding */
+  .container-padding {
+    @apply px-[var(--spacing-container)] md:px-8 lg:px-12;
+  }
+
+  /* Section spacing */
+  .section-spacing {
+    @apply py-[var(--spacing-section)];
+  }
+
+  /* Text balance for headings */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Smooth transitions */
+  .transition-default {
+    transition-duration: var(--transition-normal);
+    transition-timing-function: var(--ease-default);
+  }
+}
+
+/* ==========================================================================
+   Component Defaults (optional - can remove if not needed)
+   ========================================================================== */
+
+@layer components {
+  /* Button base - extend in components as needed */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md px-4 py-2
+           text-sm font-medium transition-default
+           focus-visible:outline-none focus-visible:ring-2
+           focus-visible:ring-ring focus-visible:ring-offset-2
+           disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary text-primary-foreground hover:bg-primary/90;
+  }
+
+  .btn-secondary {
+    @apply btn bg-secondary text-secondary-foreground hover:bg-secondary/80;
+  }
+
+  .btn-outline {
+    @apply btn border border-input bg-background hover:bg-accent hover:text-accent-foreground;
+  }
+}

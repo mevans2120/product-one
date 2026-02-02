@@ -1,0 +1,54 @@
+/**
+ * Sanity Client Configuration
+ *
+ * Creates configured Sanity client for data fetching.
+ * Place in: sanity/lib/client.ts
+ */
+
+import { createClient, type QueryParams } from "@sanity/client";
+
+import {
+  apiVersion,
+  dataset,
+  projectId,
+  readToken,
+  useCdn,
+} from "../env";
+
+/**
+ * Standard client for published content
+ */
+export const client = createClient({
+  projectId,
+  dataset,
+  apiVersion,
+  useCdn,
+  // Stega enables click-to-edit in Presentation mode
+  stega: {
+    enabled: false, // Enable per-request in sanityFetch
+    studioUrl: "/studio",
+  },
+});
+
+/**
+ * Client with authentication for draft content
+ * Only use in server components/API routes
+ */
+export const previewClient = createClient({
+  projectId,
+  dataset,
+  apiVersion,
+  useCdn: false, // Never use CDN for drafts
+  token: readToken,
+  stega: {
+    enabled: true,
+    studioUrl: "/studio",
+  },
+});
+
+/**
+ * Get appropriate client based on context
+ */
+export function getClient(preview = false) {
+  return preview ? previewClient : client;
+}

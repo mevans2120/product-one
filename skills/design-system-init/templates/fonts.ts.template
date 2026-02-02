@@ -1,0 +1,135 @@
+/**
+ * Design System: [PROJECT_NAME]
+ * Generated: [DATE]
+ *
+ * Font Configuration using next/font
+ *
+ * Why next/font?
+ * - Automatic self-hosting (no external requests)
+ * - Zero layout shift (font metrics calculated at build)
+ * - Privacy (no calls to Google Fonts at runtime)
+ * - Performance (fonts loaded optimally)
+ *
+ * Usage in layout.tsx:
+ * import { headingFont, bodyFont } from "@/lib/fonts";
+ *
+ * <body className={`${headingFont.variable} ${bodyFont.variable}`}>
+ */
+
+import { [HEADING_FONT_IMPORT], [BODY_FONT_IMPORT] } from "next/font/google";
+// Or for local fonts:
+// import localFont from "next/font/local";
+
+/* ---------------------------------------------------------------------------
+   Heading Font
+   ---------------------------------------------------------------------------
+   Choose fonts that are distinctive and match brand personality.
+   Avoid: Inter, Roboto, Arial (overused "AI slop" aesthetic)
+
+   Good alternatives:
+   - Serif elegance: Fraunces, Newsreader, Lora, Crimson_Pro
+   - Display impact: DM_Sans, Plus_Jakarta_Sans, Outfit
+   - Modern: Satoshi*, Syne, Manrope
+   (*Satoshi requires local font files)
+   --------------------------------------------------------------------------- */
+
+export const headingFont = [HEADING_FONT_FUNCTION]({
+  subsets: ["latin"],
+  display: "swap", // Ensures text visible during font load
+  variable: "--font-[HEADING_FONT_VAR]",
+  // For variable fonts, specify axes:
+  // axes: ["opsz"], // Optional axes like optical size
+  weight: ["400", "500", "600", "700"], // Or "variable" for variable fonts
+});
+
+/* ---------------------------------------------------------------------------
+   Body Font
+   ---------------------------------------------------------------------------
+   Body font should be highly readable at smaller sizes.
+   Can be same family as heading (different weight) or complementary.
+
+   Good pairings:
+   - Fraunces (heading) + DM Sans (body)
+   - Newsreader (heading) + Inter (body) - Inter is OK for body
+   - Clash Display (heading) + Satoshi (body)
+   - Plus Jakarta Sans (both)
+   --------------------------------------------------------------------------- */
+
+export const bodyFont = [BODY_FONT_FUNCTION]({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-[BODY_FONT_VAR]",
+  weight: ["400", "500", "600"], // Typically need fewer weights for body
+});
+
+/* ---------------------------------------------------------------------------
+   Example: Using Local Font Files
+   ---------------------------------------------------------------------------
+   For fonts not on Google Fonts (like Satoshi, Cabinet Grotesk):
+
+   export const headingFont = localFont({
+     src: [
+       {
+         path: "../public/fonts/Satoshi-Regular.woff2",
+         weight: "400",
+         style: "normal",
+       },
+       {
+         path: "../public/fonts/Satoshi-Medium.woff2",
+         weight: "500",
+         style: "normal",
+       },
+       {
+         path: "../public/fonts/Satoshi-Bold.woff2",
+         weight: "700",
+         style: "normal",
+       },
+     ],
+     display: "swap",
+     variable: "--font-satoshi",
+   });
+   --------------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------------
+   Example: Variable Font
+   ---------------------------------------------------------------------------
+   Variable fonts offer all weights in one file:
+
+   export const headingFont = Fraunces({
+     subsets: ["latin"],
+     display: "swap",
+     variable: "--font-fraunces",
+     axes: ["SOFT", "WONK", "opsz"], // Fraunces-specific axes
+   });
+   --------------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------------
+   Font Classes Export
+   ---------------------------------------------------------------------------
+   Helper for applying font classes to elements
+   --------------------------------------------------------------------------- */
+
+export const fontClasses = `${headingFont.variable} ${bodyFont.variable}`;
+
+/* ---------------------------------------------------------------------------
+   Usage Example in layout.tsx
+   ---------------------------------------------------------------------------
+
+   import { fontClasses } from "@/lib/fonts";
+
+   export default function RootLayout({ children }) {
+     return (
+       <html lang="en">
+         <body className={fontClasses}>
+           {children}
+         </body>
+       </html>
+     );
+   }
+
+   Then in globals.css, the variables are available:
+   --font-[heading-var] and --font-[body-var]
+
+   And Tailwind classes work:
+   font-heading, font-body
+   --------------------------------------------------------------------------- */

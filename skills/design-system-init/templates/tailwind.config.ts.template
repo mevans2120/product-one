@@ -1,0 +1,188 @@
+import type { Config } from "tailwindcss";
+
+/**
+ * Design System: [PROJECT_NAME]
+ * Generated: [DATE]
+ *
+ * This config extends Tailwind with project-specific design tokens.
+ * All colors reference CSS variables defined in globals.css.
+ */
+
+const config: Config = {
+  darkMode: "class",
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    extend: {
+      /* -----------------------------------------------------------------
+         Colors
+         Reference CSS variables for easy theming and dark mode support
+         ----------------------------------------------------------------- */
+      colors: {
+        // Primary palette
+        primary: {
+          DEFAULT: "hsl(var(--color-primary))",
+          foreground: "hsl(var(--color-primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--color-secondary))",
+          foreground: "hsl(var(--color-secondary-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--color-accent))",
+          foreground: "hsl(var(--color-accent-foreground))",
+        },
+
+        // Semantic colors
+        background: "hsl(var(--color-background))",
+        foreground: "hsl(var(--color-foreground))",
+        muted: {
+          DEFAULT: "hsl(var(--color-muted))",
+          foreground: "hsl(var(--color-muted-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--color-card))",
+          foreground: "hsl(var(--color-card-foreground))",
+        },
+
+        // UI colors
+        border: "hsl(var(--color-border))",
+        input: "hsl(var(--color-input))",
+        ring: "hsl(var(--color-ring))",
+
+        // Feedback colors
+        destructive: {
+          DEFAULT: "hsl(var(--color-destructive))",
+          foreground: "hsl(var(--color-destructive-foreground))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--color-success))",
+          foreground: "hsl(var(--color-success-foreground))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--color-warning))",
+          foreground: "hsl(var(--color-warning-foreground))",
+        },
+      },
+
+      /* -----------------------------------------------------------------
+         Typography
+         ----------------------------------------------------------------- */
+      fontFamily: {
+        heading: ["var(--font-heading)", "system-ui", "sans-serif"],
+        body: ["var(--font-body)", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "monospace"],
+      },
+
+      /* -----------------------------------------------------------------
+         Font Size Scale
+         Using 1.25 ratio (major third) - adjust as needed
+         ----------------------------------------------------------------- */
+      fontSize: {
+        xs: ["0.75rem", { lineHeight: "1rem" }],
+        sm: ["0.875rem", { lineHeight: "1.25rem" }],
+        base: ["1rem", { lineHeight: "1.5rem" }],
+        lg: ["1.125rem", { lineHeight: "1.75rem" }],
+        xl: ["1.25rem", { lineHeight: "1.75rem" }],
+        "2xl": ["1.5rem", { lineHeight: "2rem" }],
+        "3xl": ["1.875rem", { lineHeight: "2.25rem" }],
+        "4xl": ["2.25rem", { lineHeight: "2.5rem" }],
+        "5xl": ["3rem", { lineHeight: "1.1" }],
+        "6xl": ["3.75rem", { lineHeight: "1.1" }],
+        "7xl": ["4.5rem", { lineHeight: "1.05" }],
+      },
+
+      /* -----------------------------------------------------------------
+         Spacing (custom values beyond Tailwind defaults)
+         ----------------------------------------------------------------- */
+      spacing: {
+        section: "var(--spacing-section)",
+        container: "var(--spacing-container)",
+      },
+
+      /* -----------------------------------------------------------------
+         Border Radius
+         ----------------------------------------------------------------- */
+      borderRadius: {
+        sm: "var(--radius-sm)",
+        md: "var(--radius-md)",
+        lg: "var(--radius-lg)",
+        xl: "var(--radius-xl)",
+        full: "var(--radius-full)",
+      },
+
+      /* -----------------------------------------------------------------
+         Shadows
+         ----------------------------------------------------------------- */
+      boxShadow: {
+        sm: "var(--shadow-sm)",
+        md: "var(--shadow-md)",
+        lg: "var(--shadow-lg)",
+      },
+
+      /* -----------------------------------------------------------------
+         Transitions
+         ----------------------------------------------------------------- */
+      transitionDuration: {
+        fast: "var(--transition-fast)",
+        normal: "var(--transition-normal)",
+        slow: "var(--transition-slow)",
+      },
+      transitionTimingFunction: {
+        default: "var(--ease-default)",
+      },
+
+      /* -----------------------------------------------------------------
+         Container
+         ----------------------------------------------------------------- */
+      container: {
+        center: true,
+        padding: {
+          DEFAULT: "1rem",
+          sm: "1.5rem",
+          lg: "2rem",
+        },
+        screens: {
+          sm: "640px",
+          md: "768px",
+          lg: "1024px",
+          xl: "1280px",
+        },
+      },
+
+      /* -----------------------------------------------------------------
+         Animations (optional - add as needed)
+         ----------------------------------------------------------------- */
+      keyframes: {
+        "fade-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        "fade-up": {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "slide-in-right": {
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(0)" },
+        },
+      },
+      animation: {
+        "fade-in": "fade-in 0.3s ease-out",
+        "fade-up": "fade-up 0.4s ease-out",
+        "slide-in-right": "slide-in-right 0.3s ease-out",
+      },
+    },
+  },
+  plugins: [
+    // Add plugins as needed:
+    // require("@tailwindcss/typography"),
+    // require("@tailwindcss/forms"),
+  ],
+};
+
+export default config;
