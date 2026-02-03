@@ -1,0 +1,236 @@
+# CLAUDE.md Template
+
+This template provides a consistent structure for CLAUDE.md files across projects.
+Copy this file to your project root and fill in the bracketed sections.
+
+---
+
+# [PROJECT_NAME] - Claude Instructions
+
+This file provides guidance to Claude Code (claude.ai/code) when working with this repository.
+
+## Project Overview
+
+**[PROJECT_NAME]** is a [brief description of what the project is and who it's for].
+
+**Client:** [Client name or "Personal"]
+**Type:** [Website type: portfolio, booking, eCommerce, etc.]
+**Status:** [Development, Production, Maintenance]
+
+## Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| Framework | Next.js 15 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS |
+| Components | [shadcn/ui or custom] |
+| CMS | Sanity |
+| Forms | React Hook Form + Zod |
+| Deployment | Vercel |
+| [Other] | [Other technologies] |
+
+## Development Commands
+
+```bash
+# Development
+npm run dev              # Start dev server (http://localhost:3000)
+npm run build            # Production build
+npm run start            # Start production server
+npm run lint             # Run ESLint
+
+# Sanity
+npm run dev              # Studio available at /studio
+```
+
+## Project Structure
+
+```
+src/
+├── app/                 # Next.js App Router pages
+│   ├── layout.tsx       # Root layout
+│   ├── page.tsx         # Homepage
+│   ├── [routes]/        # Other pages
+│   └── studio/          # Embedded Sanity Studio
+├── components/          # React components
+│   └── ui/              # UI components (shadcn)
+├── lib/                 # Utilities
+│   ├── sanity/          # Sanity client & queries
+│   └── utils.ts         # Helper functions (cn, etc.)
+└── hooks/               # Custom React hooks
+
+sanity/
+├── schemas/             # Sanity schema definitions
+└── lib/                 # Sanity utilities
+```
+
+## Sanity CMS
+
+**Project ID:** [project-id]
+**Dataset:** production
+**Studio:** http://localhost:3000/studio
+
+### Content Types
+- [List document types and what they're for]
+- [e.g., "Service - Service offerings with descriptions"]
+- [e.g., "Testimonial - Client testimonials"]
+- [e.g., "Homepage (singleton) - Homepage content"]
+
+### Key Files
+- `sanity.config.ts` - Studio configuration
+- `src/lib/sanity/client.ts` - Sanity client
+- `src/lib/sanity/queries.ts` - GROQ queries
+- `sanity/schemas/` - Schema definitions
+
+## Code Conventions
+
+### Naming
+- **Components:** PascalCase (`ServiceCard.tsx`)
+- **Utilities:** camelCase (`utils.ts`)
+- **Hooks:** camelCase with `use` prefix (`useServices.ts`)
+- **Schemas:** camelCase (`homepageSettings.ts`)
+
+### Styling
+- Use Tailwind CSS utility classes
+- Use `cn()` from `@/lib/utils` for conditional classes
+- Follow design tokens in `globals.css`
+- Include dark mode variants when using colors
+
+### TypeScript
+- Strict mode enabled
+- Prefer interfaces for object types
+- Use type imports: `import type { ... }`
+
+---
+
+## Skills & Workflows
+
+**IMPORTANT: Use these skills when the task matches their purpose.**
+
+### Available Skills
+
+| Skill | Trigger Phrases | When to Use |
+|-------|-----------------|-------------|
+| `site-audit` | "audit site", "review existing" | Before redesigning an existing site |
+| `design-system-init` | "set up design", "initialize styles" | Start of any new project |
+| `sanity-setup` | "set up Sanity", "configure CMS" | When adding/configuring Sanity |
+| `cms-verify` | "verify CMS", "check fields" | Before client handoff |
+| `performance-audit` | "check performance", "Lighthouse" | Before launch |
+| `design-concepts` | "mockup", "design options" | When creating visual designs |
+
+### Workflow: New Project
+```
+design-system-init → [build components] → sanity-setup → [add content] → cms-verify → performance-audit
+```
+
+### Workflow: Redesign Project
+```
+site-audit → design-system-init → [build] → sanity-setup → [migrate content] → cms-verify → performance-audit
+```
+
+---
+
+## Planning vs Implementation
+
+**CRITICAL: Follow these rules to avoid unwanted work.**
+
+### When Asked to "Plan"
+- Create the plan document
+- Do NOT implement anything
+- Wait for explicit approval
+
+### Clear Implementation Signals
+- "Proceed with implementation"
+- "Start building"
+- "Implement the plan"
+- "Let's code this"
+
+### When in Doubt
+Ask: "Would you like me to proceed with implementation?"
+
+---
+
+## Git Workflow
+
+### Commits
+- Commit related changes together
+- Use descriptive commit messages
+- Include Claude attribution:
+
+```bash
+git commit -m "feat: description
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+```
+
+### Pushing
+**ALWAYS ask before pushing to remote.**
+
+```bash
+# ✅ GOOD
+# "I've committed the changes. Ready to push?"
+
+# ❌ BAD
+git push  # Without asking first
+```
+
+### What NOT to Commit
+- `.env` / `.env.local` (secrets)
+- `node_modules/`
+- `.next/`
+
+---
+
+## Environment Variables
+
+```bash
+# .env.local (git-ignored)
+NEXT_PUBLIC_SANITY_PROJECT_ID=[project-id]
+NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_SANITY_API_VERSION=2024-01-01
+SANITY_API_TOKEN=[read-token]
+# [Other project-specific variables]
+```
+
+---
+
+## Documentation
+
+**All project documentation lives in `docs/`** - check there for the latest plans, research, and decisions.
+
+### Key Documents
+- `docs/project-plan-*.md` - Implementation plans and phases
+- `docs/site-audit-*.md` - Existing site analysis (for redesigns)
+- `docs/design/` - Design principles, personas, concepts
+
+Browse `docs/` for the current state of project documentation.
+
+### Creating Documentation
+When working on complex tasks (audits, multi-step plans, architecture decisions), create documentation in `docs/`:
+- Use descriptive filenames with dates (e.g., `site-audit-clientname-MMDDYY.md`)
+- Structure with clear headings
+- Include actionable recommendations
+
+### Testing
+[Include if project has testing]
+```bash
+npm run test             # Run tests
+npm run test:e2e         # E2E tests
+```
+
+### [Project-Specific Section]
+[Add any project-specific guidance here]
+
+---
+
+## Quick Reference
+
+| Need | Command/Location |
+|------|------------------|
+| Start dev | `npm run dev` |
+| Sanity Studio | http://localhost:3000/studio |
+| Add component | `src/components/` |
+| Add page | `src/app/[route]/page.tsx` |
+| Add schema | `sanity/schemas/` |
+| Design tokens | `src/app/globals.css` |
+| Documentation | `docs/` |
